@@ -22,17 +22,15 @@ metrics = PrometheusMetrics(app)
 # Define the database model that is used to store the data
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myCompetitorNews.sqlite3'
 db = SQLAlchemy(app)
-class CompetitorNews(db.Model):
+class CompetitorNewsdata(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     OEM = db.Column(db.String(255), unique=True, nullable=False)
     news = db.Column(db.JSON)
 
 # Initialize the SQLAlchemy extension with Flask application instance 
 # db.init_app(app)
-# with app.app_context():
-#     inspector = inspect(db.engine)
-#     if not inspector.has_table("competitor_news"):
-#         db.create_all()
+with app.app_context():
+        db.create_all()
 
 # Configure logging
 def configure_logging():
@@ -99,11 +97,11 @@ def fetch_store_news(key):
                 'published_date': news.get("published", "")
             }
             items.append(item)
-            data_entry = CompetitorNews.query.filter_by(OEM=key).first()
+            data_entry = CompetitorNewsdata.query.filter_by(OEM=key).first()
             if data_entry:
                 data_entry.news = item
             else:
-                new_data = CompetitorNews(OEM=key, news=item)
+                new_data = CompetitorNewsdata(OEM=key, news=item)
                 db.session.add(new_data)
         db.session.commit()
         return {index: item for index, item in enumerate(items)}
