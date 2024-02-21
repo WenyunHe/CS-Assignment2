@@ -162,7 +162,7 @@ def user():
                 my_logger.info(f"{user_input} news data published to RabbitMQ.")
                 return render_template('user.html',items=news_data)
             else:
-                logger.warning(f"No {user_input} news data found.")  
+                my_logger.warning(f"No {user_input} news data found.")  
                 return render_template("index.html",msg="No news data found")
         else:
             return render_template('index.html',msg='')
