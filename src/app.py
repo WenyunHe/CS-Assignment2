@@ -34,22 +34,22 @@ with app.app_context():
 # Configure logging
 def configure_logging():
     log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    my_logger = logging.getLogger(__name__)
+    my_logger.setLevel(logging.INFO)
     
     # Log to file with rotating file handler
     file_handler = RotatingFileHandler('app.log', maxBytes=10*1024*1024, backupCount=5)
     file_handler.setFormatter(log_formatter)
-    logger.addHandler(file_handler)
+    my_logger.addHandler(file_handler)
     
     # Log to console
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(log_formatter)
-    logger.addHandler(console_handler)
+    my_logger.addHandler(console_handler)
     
-    return logger
+    return my_logger
 
-logger = configure_logging()
+my_logger = configure_logging()
 
 def title_truncate(title):
     parts = title.rsplit('-', 1)
@@ -105,7 +105,7 @@ def fetch_store_news(key):
         db.session.commit()
         return {index: item for index, item in enumerate(items)}
     except Exception as e:
-        logger.exception("Error fetching news for %s: %s", key, str(e))
+        my_logger.exception("Error fetching news for %s: %s", key, str(e))
         return []
 
 def setup_rabbitmq():
@@ -151,7 +151,7 @@ def user():
             connection, channel = setup_rabbitmq()
             if news_data:
                 channel.basic_publish(exchange='my_exchange',routing_key='my_queue', body=json.dumps(news_data))
-                logger.info(f"{user_input} news data published to RabbitMQ.")
+                my_logger.info(f"{user_input} news data published to RabbitMQ.")
                 return render_template('user.html',items=news_data)
             else:
                 logger.warning(f"No {user_input} news data found.")  
@@ -159,7 +159,7 @@ def user():
         else:
             return render_template('index.html',msg='')
     except Exception as e:
-        logger.exception("An error occurred: %s", str(e))
+        my_logger.exception("An error occurred: %s", str(e))
         return render_template('index.html',msg="An error occurred")
 
 @app.teardown_appcontext
@@ -167,9 +167,9 @@ def teardown_rabbitmq(exception=None):
     try:
         if connection and connection.is_open:
             connection.close()
-            logger.info("RabbitMQ connection closed.")
+            my_logger.info("RabbitMQ connection closed.")
     except Exception as e:
-        logger.exception("Error closing RabbitMQ connection: %s", str(e))
+        my_logger.exception("Error closing RabbitMQ connection: %s", str(e))
 
 
 if __name__ == "__main__":
