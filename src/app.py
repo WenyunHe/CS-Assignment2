@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from prometheus_flask_exporter import PrometheusMetrics
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect
 import feedparser
 import requests
 import logging
@@ -29,7 +30,9 @@ class CompetitorNews(db.Model):
 # Initialize the SQLAlchemy extension with Flask application instance 
 # db.init_app(app)
 with app.app_context():
-    db.create_all()
+    inspector = inspect(db.engine)
+    if not inspector.has_table("competitor_news"):
+        db.create_all()
 
 # Configure logging
 def configure_logging():
