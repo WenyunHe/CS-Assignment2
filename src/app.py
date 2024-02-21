@@ -28,7 +28,7 @@ class CompetitorNews(db.Model):
     news = db.Column(db.JSON)
 
 # Initialize the SQLAlchemy extension with Flask application instance 
-# db.init_app(app)
+db.init_app(app)
 with app.app_context():
     inspector = inspect(db.engine)
     if not inspector.has_table("competitor_news"):
