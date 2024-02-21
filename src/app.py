@@ -29,10 +29,10 @@ class CompetitorNews(db.Model):
 
 # Initialize the SQLAlchemy extension with Flask application instance 
 # db.init_app(app)
-with app.app_context():
-    inspector = inspect(db.engine)
-    if not inspector.has_table("competitor_news"):
-        db.create_all()
+# with app.app_context():
+#     inspector = inspect(db.engine)
+#     if not inspector.has_table("competitor_news"):
+#         db.create_all()
 
 # Configure logging
 def configure_logging():
