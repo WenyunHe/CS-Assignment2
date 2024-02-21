@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from prometheus_flask_exporter import PrometheusMetrics
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 import feedparser
 import requests
 import logging
@@ -172,6 +171,7 @@ def teardown_rabbitmq(exception=None):
     except Exception as e:
         logger.exception("Error closing RabbitMQ connection: %s", str(e))
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
 
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)

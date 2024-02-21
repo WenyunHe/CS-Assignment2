@@ -1,0 +1,3 @@
+2024-02-21 05:54:11,107 INFO __main__ Thread-3 (process_request_thread) : RabbitMQ connection closed.
+2024-02-21 05:54:17,935 INFO __main__ Thread-5 (process_request_thread) : Cummins news data published to RabbitMQ.
+2024-02-21 05:54:22,851 INFO __main__ Thread-6 (process_request_thread) :  John Deere news data published to RabbitMQ.
