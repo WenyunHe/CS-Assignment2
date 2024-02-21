@@ -111,7 +111,7 @@ def fetch_store_news(key):
 def setup_rabbitmq():
     # RabbitMQ connection parameters
     RABBITMQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
-    RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT', '5672')
+    RABBITMQ_PORT = int(os.environ.get('RABBITMQ_PORT', '5672'))
     EXCHANGE_NAME = 'my_exchange'
     # Create a connection
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT))
