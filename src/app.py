@@ -10,7 +10,6 @@ import sys
 import pika
 import os
 import json
-from app_database import db, CompetitorNews
 
 app = Flask(__name__)
 
@@ -26,10 +25,16 @@ database_file_path = os.path.join(current_directory, 'CompetitorNews.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
+class CompetitorNews(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    OEM = db.Column(db.String(255), unique=True, nullable=False)
+    news = db.Column(db.JSON)
+        
 # Initialize the SQLAlchemy extension with Flask application instance 
 db.init_app(app)
-with app.app_context():
-        db.create_all()
+# with app.app_context():
+#         db.create_all()
 
 # Configure logging
 def configure_logging():
