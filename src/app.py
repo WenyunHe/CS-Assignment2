@@ -20,7 +20,12 @@ app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
 # Define the database model that is used to store the data
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myCompetitorNews.sqlite3'
+current_directory = os.path.abspath(os.path.dirname(__file__))
+database_file_path = os.path.join(current_directory, 'CompetitorNews.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file_path
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 db = SQLAlchemy(app)
 class CompetitorNewsdata(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
