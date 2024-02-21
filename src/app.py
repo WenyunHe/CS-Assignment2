@@ -112,9 +112,10 @@ def setup_rabbitmq():
     # RabbitMQ connection parameters
     RABBITMQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
     RABBITMQ_PORT = int(os.environ.get('RABBITMQ_PORT', '5672'))
+    rabbitmq_url = os.getenv('RABBITMQ_URL')
     EXCHANGE_NAME = 'my_exchange'
     # Create a connection
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitmq_url))
     # Create a channel from the connection
     channel = connection.channel()
     # Declare an exchange
