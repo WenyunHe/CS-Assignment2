@@ -10,6 +10,7 @@ import sys
 import pika
 import os
 import json
+from app_database import db, CompetitorNews
 
 app = Flask(__name__)
 
@@ -25,15 +26,8 @@ database_file_path = os.path.join(current_directory, 'CompetitorNews.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
-db = SQLAlchemy(app)
-class CompetitorNewsdata(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    OEM = db.Column(db.String(255), unique=True, nullable=False)
-    news = db.Column(db.JSON)
-
 # Initialize the SQLAlchemy extension with Flask application instance 
-# db.init_app(app)
+db.init_app(app)
 with app.app_context():
         db.create_all()
 
@@ -102,11 +96,11 @@ def fetch_store_news(key):
                 'published_date': news.get("published", "")
             }
             items.append(item)
-            data_entry = CompetitorNewsdata.query.filter_by(OEM=key).first()
+            data_entry = CompetitorNews.query.filter_by(OEM=key).first()
             if data_entry:
                 data_entry.news = item
             else:
-                new_data = CompetitorNewsdata(OEM=key, news=item)
+                new_data = CompetitorNews(OEM=key, news=item)
                 db.session.add(new_data)
         db.session.commit()
         return {index: item for index, item in enumerate(items)}
