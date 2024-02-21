@@ -113,7 +113,7 @@ def setup_rabbitmq():
     # RabbitMQ connection parameters
     RABBITMQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
     RABBITMQ_PORT = int(os.environ.get('RABBITMQ_PORT', '5672'))
-    rabbitmq_url = os.getenv('RABBITMQ_URL')
+    rabbitmq_url = os.getenv('RABBITMQ_URL','amqps://jcqgoike:1c6nP86bqZZIj32sEShAnBN0YrO7tR7m@shark.rmq.cloudamqp.com/jcqgoike')
     EXCHANGE_NAME = 'my_exchange'
     # Create a connection
     connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitmq_url))
