@@ -10,7 +10,7 @@ import sys
 import pika
 import os
 import json
-from appdatabase import db, CompetitorNews
+from app_database import db, CompetitorNews
 
 app = Flask(__name__)
 
